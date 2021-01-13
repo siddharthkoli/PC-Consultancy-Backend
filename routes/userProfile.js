@@ -10,7 +10,7 @@ router.get('/getProfileData', async (req, res) => {
     // const { requiredEmail } = req.body;
     const requiredEmail = req.body.email;
     try {
-        const query = `SELECT Firstname, Lastname, Phone, Address
+        const query = `SELECT Email, Firstname, Lastname, Phone, Address
         FROM Users
         WHERE Email='${requiredEmail}'`;
         await sql.connect(SQLServerConnectionString);
