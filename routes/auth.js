@@ -38,7 +38,7 @@ router.post('/signup', async (req, res) => {
         });
     } catch (e) {
         sql.close();
-        console.log(`${e}`);
+        console.log(`[auth.js|signup] ${e}`);
         res.sendStatus(500);
     }
 });
