@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 const verifyToken = (token) => {
     try {
@@ -41,8 +42,28 @@ const HandleEscapeCharacters = (str) => {
     return replacedString;
 }
 
+const sendMail = async (to, subject, html) => {
+    let transporter = nodemailer.createTransport({
+		host: 'smtp.gmail.com',
+		port: 587,
+		secure: false,
+		auth: {
+			user: 'elgo.queues@gmail.com',
+			pass: 'Svk2432k01'
+		},
+	});
+
+    await transporter.sendMail({
+        from: '"Siddharth Koli" <elgo.queues@gmail.com>',
+        to: to,
+        subject: subject,
+        html: html,
+    })
+};
+
 module.exports = {
     verifyToken,
     RandomIdGenerator,
-    HandleEscapeCharacters
+    HandleEscapeCharacters,
+    sendMail
 }
