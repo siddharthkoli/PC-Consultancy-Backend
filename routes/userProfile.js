@@ -4,8 +4,7 @@ const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const { connectionString } = require('../dev-config');
-const SQLServerConnectionString = 'Server=DESKTOP-VBR6T2V\\SQLEXPRESS;Database=testPCDB;User Id=sa;Password=Svk2432k01;';
-// const SQLServerConnectionString = connectionString;
+const SQLServerConnectionString = connectionString;
 
 router.get('/getProfileData', async (req, res) => {
     // const { requiredEmail } = req.body;
@@ -74,9 +73,33 @@ router.patch('/updatePassword', async (req, res) => {
                 });
             });
         }
+        res.sendStatus(401);
     } catch (e) {
         sql.close();
         console.log(`[userProfile.js|updatePassword (3rd log)] ${err}`);
+        res.sendStatus(500);
+    }
+});
+
+router.delete('/deleteProfile', async(req, res) => {
+    const { email, password } = req.body;
+    try {
+        let query = `SELECT Password FROM Users WHERE Email='${email}'`;
+        await sql.connect(SQLServerConnectionString);
+        let result = await sql.query(query);
+        if (result.recordset.length === 0) 
+            return res.sendStatus(401);
+        const match = await bcrypt.compare(password, result.recordset[0].Password);
+        if (match) {
+            query = `DELETE FROM Users WHERE Email='${email}'`;
+            await sql.query(query);
+            sql.close();
+            return res.sendStatus(200);
+        }
+        return res.sendStatus(401);
+    } catch (e) {
+        sql.close();
+        console.log(`[userProfile.js|deleteProfile] ${e}`);
         res.sendStatus(500);
     }
 });
