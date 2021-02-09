@@ -8,3 +8,4 @@ sqltools_20201117125918_19176.log
 sqltools_20201129165547_5648.log
 *.log
 testt.sql
+.env
