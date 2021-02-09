@@ -4,9 +4,10 @@ const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt')
 const { connectionString } = require('../dev-config');
-const SQLServerConnectionString = 'Server=DESKTOP-VBR6T2V\\SQLEXPRESS;Database=testPCDB;User Id=sa;Password=Svk2432k01;';
 const jwt = require('jsonwebtoken');
-// const SQLServerConnectionString = connectionString;
+const { sendMail } = require('../Misc/utils');
+const { sendSignupMail } = require('../Misc/Mail');
+const SQLServerConnectionString = connectionString;
 
 router.post('/signup', async (req, res) => {
     if (req.body.email == null
@@ -33,6 +34,7 @@ router.post('/signup', async (req, res) => {
                 let future = new Date();
                 future.setDate(future.getDate() + 30);
                 res.cookie("jwt", token, { secure: true, httpOnly: true, sameSite: "none", expires: future }) // set secure to true when using https connection. Expires param is required so that cookie is saved even when the session is closed.
+                sendSignupMail(req.body.email);
                 return res.status(201).send();
             })
         });
@@ -48,6 +50,12 @@ router.post('/testsign', async (req, res) => {
     res.cookie("jwt", token, { secure: true, httpOnly: true, sameSite: "none" }) // set secure to true when using https connection
     res.send();
     // res.status(200).send({ token: token });
+});
+
+router.get('/sendMail', async(req, res) => {
+    // await sendMail();
+    sendSignupMail(['siddharthkoli2401@gmail.com']);
+    res.send();
 });
 
 router.post('/login', async (req, res) => {
