@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const { connectionString } = require('../dev-config');
-const SQLServerConnectionString = 'Server=DESKTOP-VBR6T2V\\SQLEXPRESS;Database=testPCDB;User Id=sa;Password=Svk2432k01;';
-// const SQLServerConnectionString = connectionString;
+const SQLServerConnectionString = connectionString;
 
 router.get('/categories', async (req, res) => {
     const Id = req.query.id || '';

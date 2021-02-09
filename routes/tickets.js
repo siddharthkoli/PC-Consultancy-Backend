@@ -3,10 +3,9 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const { connectionString } = require('../dev-config');
-const SQLServerConnectionString = 'Server=DESKTOP-VBR6T2V\\SQLEXPRESS;Database=testPCDB;User Id=sa;Password=Svk2432k01;';
 const jwt = require('jsonwebtoken');
-const { HandleEscapeCharacters, RandomIdGenerator, verifyToken } = require('../utils');
-// const SQLServerConnectionString = connectionString;
+const { HandleEscapeCharacters, RandomIdGenerator, verifyToken } = require('../Misc/utils');
+const SQLServerConnectionString = connectionString;
 
 router.post('/createTicket', async (req, res) => {
     if (req.body.issueDesc === null
