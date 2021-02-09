@@ -9,7 +9,7 @@ const tickets = require('./routes/tickets');
 const userProfile = require('./routes/userProfile');
 const transactions = require('./routes/transactions');
 const categories = require('./routes/categories');
-const { verifyToken } = require('./utils');
+const { verifyToken } = require('./Misc/utils');
 
 const { DBName } = require('./dev-config');
 
