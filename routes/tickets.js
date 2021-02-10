@@ -71,7 +71,7 @@ router.get('/tickets', async (req, res) => {
 
 router.post('/testverify', async (req, res) => {
     try {
-        // const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], "secretLey");
+        // const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], process.env.SECRET_KEY);
         const { email } = req.body;
         console.log(`em ${email}`);
         res.send({email});

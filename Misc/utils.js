@@ -1,9 +1,10 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, "secretLey");
+        return jwt.verify(token, process.env.SECRET_KEY);
     } catch (e) {
         return null;
     }
@@ -49,7 +50,7 @@ const sendMail = async (to, subject, html) => {
 		secure: false,
 		auth: {
 			user: 'elgo.queues@gmail.com',
-			pass: 'Svk2432k01'
+			pass: process.env.EMAIL_PASSWORD
 		},
 	});
 

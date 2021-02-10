@@ -30,7 +30,7 @@ router.post('/signup', async (req, res) => {
                 await sql.connect(SQLServerConnectionString);
                 await sql.query(query);
                 sql.close();
-                const token = jwt.sign({ email: req.body.email, password: req.body.password }, "secretLey", { expiresIn: "30 days" });
+                const token = jwt.sign({ email: req.body.email, password: req.body.password }, process.env.SECRET_KEY, { expiresIn: "30 days" });
                 let future = new Date();
                 future.setDate(future.getDate() + 30);
                 res.cookie("jwt", token, { secure: true, httpOnly: true, sameSite: "none", expires: future }) // set secure to true when using https connection. Expires param is required so that cookie is saved even when the session is closed.
@@ -46,7 +46,7 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/testsign', async (req, res) => {
-    const token = jwt.sign({ email: req.body.email, password: req.body.password }, "secretLey", { expiresIn: "30 days" });
+    const token = jwt.sign({ email: req.body.email, password: req.body.password }, process.env.SECRET_KEY, { expiresIn: "30 days" });
     res.cookie("jwt", token, { secure: true, httpOnly: true, sameSite: "none" }) // set secure to true when using https connection
     res.send();
     // res.status(200).send({ token: token });
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
         const userPassword = result.recordset[0].Password;
         const match = await bcrypt.compare(req.body.password, userPassword);
         if (match) {
-            const token = jwt.sign({ email: req.body.email, password: req.body.password }, "secretLey", { expiresIn: "30 days" });
+            const token = jwt.sign({ email: req.body.email, password: req.body.password }, process.env.SECRET_KEY, { expiresIn: "30 days" });
             let future = new Date();
             future.setDate(future.getDate() + 30); // 30 days later. Same as jwt expiry.
             res.cookie("jwt", token, { secure: true, httpOnly: true, sameSite: "none", expires: future }) // set secure to true when using https connection. Expires param is required so that cookie is saved even when the session is closed.
